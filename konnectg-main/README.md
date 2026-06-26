@@ -1,16 +1,100 @@
-# React + Vite
+# KonnectG
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**KonnectG** is Siliguri's verified local business directory — built with Vite, React, React Router, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## ✨ What's inside
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Splash screen** — brief animated logo intro on first load
+- **Navbar** — full navigation (Home, Categories, Listings, Map, Profile, Merchant, Admin) with a location selector
+- **Hero** — live search bar, "Explore Categories" / "View Nearby Map" CTAs
+- **Marquee** — scrolling ticker of current deals and new listings
+- **Cards** — Popular Categories, Top Verified Merchants, Local Offers & Deals, and "How KonnectG Works" steps
+- **NotifyForm** — "Know a great local business?" suggestion form
+- **BusinessCTA** — "Own a Local Business?" listing CTA
+- **Footer** — brand + quick links
 
-## React Compiler
+Categories, Listings, Map, Profile, Merchant, and Admin are scaffolded as routed pages with placeholder content — swap each in with real data/components as that part of the product gets built.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 Tech stack
 
-## Expanding the ESLint configuration
+- [Vite](https://vitejs.dev/) — build tool
+- [React 18](https://react.dev/)
+- [React Router](https://reactrouter.com/) — multi-page navigation
+- [Tailwind CSS](https://tailwindcss.com/) — styling, with brand tokens (purple/gold) extended in `tailwind.config.js`
+- [ESLint](https://eslint.org/) (flat config) — linting
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📂 Project structure
+
+```
+konnectg-landing/
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── assets/
+│   │   └── logo.svg
+│   ├── components/
+│   │   ├── SplashScreen.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── Hero.jsx
+│   │   ├── Marquee.jsx
+│   │   ├── Cards.jsx
+│   │   ├── BusinessCTA.jsx
+│   │   ├── NotifyForm.jsx
+│   │   └── Footer.jsx
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── Categories.jsx
+│   │   ├── Listings.jsx
+│   │   ├── Map.jsx
+│   │   ├── Profile.jsx
+│   │   ├── Merchant.jsx
+│   │   ├── Admin.jsx
+│   │   ├── PlaceholderPage.jsx   (shared layout for the stub pages above)
+│   │   └── NotFound.jsx
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   └── main.jsx
+├── index.html
+├── tailwind.config.js
+├── postcss.config.js
+├── vite.config.js
+├── eslint.config.js
+└── package.json
+```
+
+## 🚀 Getting started
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the printed local URL (usually `http://localhost:5173`).
+
+### Other scripts
+
+```bash
+npm run build     # production build to /dist
+npm run preview   # preview the production build locally
+npm run lint       # run ESLint
+```
+
+## 🎨 Brand tokens
+
+Defined in `tailwind.config.js`:
+
+| Token | Hex | Use |
+|---|---|---|
+| `purple-900` | `#2C0E4A` | Deepest gradient stop |
+| `purple-700` | `#5B2A8C` | Primary buttons, links |
+| `purple-600` | `#6B2FA0` | Logo mark, hover states |
+| `gold` | `#F5C518` | Primary CTA accent |
+| `coral` | `#FF6B5C` | Secondary accent (marquee, errors) |
+| `paper` | `#FBF8F2` | Page background |
+
+## 📝 Notes
+
+- `NotifyForm` currently logs suggestions to the console — connect it to a real backend endpoint so suggestions land in a review queue.
+- `Categories`, `Listings`, `Map`, `Profile`, `Merchant`, and `Admin` are placeholder pages — build these out as the corresponding features ship.
+- The splash screen auto-dismisses after 1.8s (see `src/App.jsx`); adjust the timeout to taste.

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Hero() {
   const [query, setQuery] = useState('')
@@ -47,18 +48,18 @@ export default function Hero() {
       </form>
 
       <div className="mt-7 flex flex-wrap items-center justify-center gap-4">
-        <a
-          href="/categories"
+        <Link
+          to="/categories"
           className="rounded-full bg-gold px-7 py-3 text-sm font-semibold text-purple-900 transition hover:-translate-y-0.5"
         >
           Explore Categories
-        </a>
-        <a
-          href="/map"
+        </Link>
+        <Link
+          to="/map"
           className="rounded-full bg-white/15 px-7 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
         >
           View Nearby Map
-        </a>
+        </Link>
       </div>
     </section>
   )

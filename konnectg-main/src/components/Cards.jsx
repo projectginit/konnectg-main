@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 const CATEGORIES = [
   { icon: '🍽️', bg: '#F1E6FB', name: 'Restaurants', count: 48 },
   { icon: '🏥', bg: '#E3F1FB', name: 'Healthcare', count: 32 },
@@ -33,11 +35,12 @@ export default function Cards() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-7 flex items-baseline justify-between">
             <h2 className="font-display text-2xl font-bold text-ink">Popular Categories</h2>
-            <a href="/categories" className="text-sm font-semibold text-purple-600">View All →</a>
+            <Link to="/categories" className="text-sm font-semibold text-purple-600">View All →</Link>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {CATEGORIES.map((c) => (
-              <div
+              <Link
+                to="/categories"
                 key={c.name}
                 className="cursor-pointer rounded-2xl border border-transparent bg-[#F7F6FA] p-5 text-left transition hover:-translate-y-0.5 hover:border-purple-100 hover:bg-white hover:shadow-lg"
               >
@@ -49,7 +52,7 @@ export default function Cards() {
                 </div>
                 <h3 className="text-sm font-semibold text-ink">{c.name}</h3>
                 <p className="text-xs text-ink-soft">{c.count} listings</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

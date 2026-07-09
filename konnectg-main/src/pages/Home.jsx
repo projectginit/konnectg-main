@@ -11,7 +11,10 @@ export default function Home() {
     <div className="min-h-screen bg-paper">
       <Navbar />
       <Hero />
-      <Marquee />
+
+      <div className="-mt-20 relative z-20">
+          <Marquee />
+      </div>
       <Cards />
       <NotifyForm />
       <BusinessCTA />

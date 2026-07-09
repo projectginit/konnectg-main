@@ -31,8 +31,8 @@ export default function Cards() {
   return (
     <>
       {/* Popular Categories */}
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-6xl">
+      <section className="px-6 py-24">
+        <div className="mx-auto max-w-7xl">
           <div className="mb-7 flex items-baseline justify-between">
             <h2 className="font-display text-2xl font-bold text-ink">Popular Categories</h2>
             <Link to="/categories" className="text-sm font-semibold text-purple-600">View All →</Link>

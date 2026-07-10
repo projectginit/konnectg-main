@@ -89,7 +89,7 @@ export default function Cards() {
       {/* Local Offers & Deals */}
       <section className="px-6 py-8">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-7 font-display text-2xl font-bold text-ink">🔥 Local Offers &amp; Deals</h2>
+          <h2 className="mb-7 font-display text-2xl font-bold text-ink">Local Offers &amp; Deals</h2>
           <div className="grid gap-6 sm:grid-cols-3">
             {OFFERS.map((o) => (
               <div key={o.title} className="rounded-2xl border border-purple-50 bg-white p-5">

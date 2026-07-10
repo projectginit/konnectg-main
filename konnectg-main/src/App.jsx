@@ -9,7 +9,15 @@ import Profile from './pages/Profile'
 import Merchant from './pages/Merchant'
 import Admin from './pages/Admin'
 import NotFound from './pages/NotFound'
+
 import './App.css'
+
+import Overview from './components/admin/Overview'
+import Merchants from './components/admin/Merchants'
+import Verification from './components/admin/Verification'
+import Offers from './components/admin/Offers'
+import Reviews from './components/admin/Reviews'
+import Analytics from './components/admin/Analytics'
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true)
@@ -29,8 +37,15 @@ export default function App() {
       <Route path="/map" element={<MapPage />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/merchant" element={<Merchant />} />
-      <Route path="/admin" element={<Admin />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path="/admin" element={<Admin />}>
+      <Route path="dashboard" element={<Overview />} />
+        <Route path="merchants" element={<Merchants />} />
+        <Route path="verification" element={<Verification />} />
+        <Route path="offers" element={<Offers />}/>
+        <Route path="reviews" element={<Reviews />}/>
+        <Route path="analytics" element={<Analytics />}/>
+      </Route>
+      <Route path="*" element={<NotFound />}/>
     </Routes>
   )
 }

@@ -12,7 +12,7 @@ const LINKS = [
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between gap-4 border-b border-purple-100 bg-white px-6 py-4">
+    <header className="sticky top-0 z-40 flex items-center justify-between gap-4 bg-[#66023C] px-6 py-4">
       <NavLink to="/" className="flex items-center gap-2.5 font-display text-xl font-bold">
         <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-purple-600 text-white">
           K

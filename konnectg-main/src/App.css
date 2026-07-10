@@ -2,14 +2,3 @@
   background-color: #F5C518;
   color: #2C0E4A;
 }
-
-/* Splash screen fade-out handled by App.jsx unmount; this keeps the
-   transition smooth in case you swap the timer for a CSS-driven exit. */
-.splash-exit {
-  animation: splashFade 0.4s ease forwards;
-}
-
-@keyframes splashFade {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}

@@ -15,7 +15,7 @@ export default function Navbar() {
     <header
       className="sticky top-0 z-50 px-6"
       style={{
-        background: '#800039',
+        background: '#7B0040',
         boxShadow: '0 2px 20px rgba(0,0,0,0.3)',
         borderBottom: '1px solid rgba(245,197,24,0.2)',
       }}

@@ -3,6 +3,18 @@
 @tailwind utilities;
 
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #FBF8F2;
+  color: #1F1535;
+}
+
+
 :root{--bg:#FBF8F2;
   --text-secondary:#ffffff;
   --text-primary:#1F1535;
@@ -33,3 +45,4 @@ body {
   background-color: var(--bg);
   color: var(--text);
 }
+

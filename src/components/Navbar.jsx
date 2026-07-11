@@ -29,13 +29,9 @@ export default function Navbar() {
             key={link.label}
             to={link.to}
             className={({ isActive }) =>
-              `border-b-2 pb-1.5 text-sm font-medium transition ${
-                isActive
+              `border-b-2 pb-1.5 text-sm font-medium transition ${isActive
                   ? 'border-gold font-semibold text-ink'
-                  : 'border-transparent text-ink-soft hover:text-purple-600'
-              }`
-            }
-          >
+                  : 'border-transparent text-ink-soft hover:text-purple-600'}`}>
             {link.label}
           </NavLink>
         ))}

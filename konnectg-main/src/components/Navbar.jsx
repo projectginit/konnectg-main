@@ -44,14 +44,14 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between gap-4 bg-[#66023C] px-6 py-4">
+    <header className="relative top-0 z-40 flex items-center justify-between gap-4 bg-[#66023C] px-6 py-4">
       <NavLink to="/" className="flex items-center gap-2.5 font-display text-xl font-bold">
         <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-purple-600 text-white">
           K
         </span>
         <span>
-          <span className="text-purple-700">Konnect</span>
-          <span className="text-gold-dark">G</span>
+          <span className="text-slate-200">Konnect</span>
+          <span className="text-gray-500">G</span>
         </span>
       </NavLink>
 
@@ -64,7 +64,7 @@ export default function Navbar() {
               `border-b-2 pb-1.5 text-sm font-medium transition ${
                 isActive
                   ? 'border-gold font-semibold text-ink'
-                  : 'border-transparent text-ink-soft hover:text-purple-600'
+                  : 'border-transparent text-ink-soft hover:text-white'
               }`
             }
           >

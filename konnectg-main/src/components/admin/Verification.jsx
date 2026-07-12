@@ -1,6 +1,8 @@
+import '../../pages/Admin.css'
 function Verification() {
   return (
-    <div>
+    <div className="admin-header">
+      Verification
     </div>
   )
 }

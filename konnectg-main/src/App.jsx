@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import SplashScreen from './components/SplashScreen'
 import Home from './pages/Home'
 import Categories from './pages/Categories'
@@ -38,7 +38,8 @@ export default function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/merchant" element={<Merchant />} />
       <Route path="/admin" element={<Admin />}>
-      <Route path="dashboard" element={<Overview />} />
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<Overview />} />
         <Route path="merchants" element={<Merchants />} />
         <Route path="verification" element={<Verification />} />
         <Route path="offers" element={<Offers />}/>

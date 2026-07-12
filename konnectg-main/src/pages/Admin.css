@@ -1,25 +1,29 @@
-.root{
-    font-family: 'Manrope', sans-serif;
+@import '../index.css';
+
+.admin-layout{
+    display: flex;
+    min-height: 100vh;
 }
 
+/* Admin Sidebar Styles */
 .admin-sidebar {
     display: flex;
     flex-direction: column;
     width: 250px;
-    background-color: #66023C;
-    color: white;
+    background-color: var(--primary);
+    color: var(--text-secondary);
     width: 15vw;
+    min-width: 220px;
+    max-width: 300px;
     height: 100vh;
     position: relative;
     top: 0;
     left: 0;
-    padding-top: 20px;
+    padding-top: 5px;
     text-align: center;
 }
 
 .admin-sidebar-button{
-    background-color: #66023C;
-    color: white;
     border: none;
     padding: 10px 20px;
     text-align: left;
@@ -30,5 +34,66 @@
 }
 
 .admin-sidebar-button:hover {
-    background-color: #5a0234;
+    background-color: var(--hover);
+}
+
+.dash-profile {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 10px;
+    background-color: var(--primary);
+    cursor: pointer;
+}
+.dash-profile-icon {
+    padding: 8px;
+    border-radius: 10px;
+    background-color: var(--grey);
+}
+.dash-profile-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dash-profile:hover {
+    background-color: var(--hover);
+}
+
+/*Admin Dashboard Overview*/
+.admin-header{
+    padding: 20px;
+    font-size: 1.75rem;
+    display: flex;
+    direction: row;
+    font-weight: bolder;
+}
+
+.admin-card-container{
+    display: flex;
+    justify-content: space-between;
+    width: 80vw;
+    padding: 20px;
+    gap: 10px;
+}
+
+
+/*Admin Card*/
+.admin-card{
+    width: 15vw;
+    height: 15vh;
+    background-color: var(--muted);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-card-top-text{
+    font-weight: 400;
+}
+.admin-card-mid-text{
+    font-size: 1.5rem;
+    font-weight: 900;
 }

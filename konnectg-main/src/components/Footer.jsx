@@ -14,8 +14,8 @@ export default function Footer() {
               K
             </span>
             <span>
-              <span className="text-purple-700">Konnect</span>
-              <span className="text-gold-dark">G</span>
+              <span className="text-slate-700">Konnect</span>
+              <span className="text-[#66023c]">G</span>
             </span>
           </div>
           <p className="mt-1 text-sm text-ink-soft">

@@ -1,7 +1,8 @@
+import '../../pages/Admin.css'
 function Merchants() {
   return (
-    <div>
-        <h1>Merchants</h1> 
+    <div >
+        <h1 className="admin-header">Merchants</h1> 
     </div>
   )
 }

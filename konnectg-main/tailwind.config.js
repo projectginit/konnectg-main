@@ -4,21 +4,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#1F1535',
-        'ink-soft': '#5B5570',
+        ink: '#1A000D',
+        'ink-soft': '#5A3347',
         purple: {
-          900: '#2C0E4A',
-          700: '#5B2A8C',
-          600: '#6B2FA0',
-          100: '#EDE3FB',
-          50: '#F4EEFB',
+          900: '#3D0020',
+          700: '#7B0040',
+          600: '#8F0049',
+          100: '#F5D6E4',
+          50: '#FAF0F5',
         },
         gold: {
-          DEFAULT: '#F5C518',
-          dark: '#E0A800',
+          DEFAULT: '#3D5A1A',
+          dark: '#2D4412',
         },
-        coral: '#FF6B5C',
-        paper: '#FBF8F2',
+        coral: '#B5003A',
+        paper: '#E5E2C8',
       },
       fontFamily: {
         display: ['Poppins', 'sans-serif'],

@@ -6,8 +6,18 @@ function Overview() {
     <div>
       <h1 className="admin-header">Dashboard Overview</h1>
       <div className="admin-card-container">
-        <AdminCard/>
-        <AdminCard/>
+        <AdminCard 
+          icon="🔴"
+          title="Pending Verifications"
+          value="- -"
+          subtitle="No Verifications Pending"
+        />
+        <AdminCard
+          icon=""
+          title=""
+          value=""
+          subtitle=""
+        />
         <AdminCard/>
         <AdminCard/>
       </div>

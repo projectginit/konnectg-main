@@ -79,15 +79,15 @@
 
 /*Admin Card*/
 .admin-card{
-    width: 15vw;
-    height: 15vh;
+    width: 18vw;
+    height: 18vh;
     background-color: var(--muted);
     border-radius: 8px;
-    padding: 10px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: start;
 }
 
 .admin-card-top-text{

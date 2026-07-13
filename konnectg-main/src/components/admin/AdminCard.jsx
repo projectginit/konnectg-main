@@ -1,11 +1,12 @@
 import '../../pages/Admin.css'
 
-function AdminCard() {
+function AdminCard({icon, title, value, subtitle}) {
   return (
     <div className="admin-card">
-        <p className='admin-card-top-text'>Analytics Title</p>
-        <p className='admin-card-mid-text'>Main-Text</p>
-        <p className='admin-card-bot-text'>something?</p>
+        
+        <p className='admin-card-top-text'><span className='admin-card-icon'>{icon}</span>{title}</p>
+        <p className='admin-card-mid-text'>{value}</p>
+        <p className='admin-card-bot-text'>{subtitle}</p>
     </div>
   )
 }

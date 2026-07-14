@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
@@ -15,20 +16,21 @@ const CATEGORIES = [
 const MAX = Math.max(...CATEGORIES.map((c) => c.count))
 
 export default function Categories() {
+  const navigate = useNavigate()
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-
       <main className="mx-auto max-w-6xl px-6 py-12">
         <div className="mb-10">
           <h1 className="font-display text-4xl font-extrabold text-ink">All Categories</h1>
           <p className="mt-2 text-ink-soft">Browse all business categories in your area</p>
         </div>
-
         <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
           {CATEGORIES.map((cat) => (
             <div
               key={cat.name}
+              onClick={() => navigate(`/listings?category=${encodeURIComponent(cat.name)}`)}
               className="flex cursor-pointer flex-col rounded-2xl border border-[#F0EEF6] bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
             >
               <div
@@ -37,27 +39,18 @@ export default function Categories() {
               >
                 {cat.icon}
               </div>
-
               <h2 className="font-display text-base font-bold text-ink">{cat.name}</h2>
               <p className="mb-5 mt-1 text-sm text-ink-soft">{cat.count} businesses</p>
-
-              <div
-                className="mt-auto h-1.5 w-full overflow-hidden rounded-full"
-                style={{ background: cat.barTrack }}
-              >
+              <div className="mt-auto h-1.5 w-full overflow-hidden rounded-full" style={{ background: cat.barTrack }}>
                 <div
                   className="h-full rounded-full"
-                  style={{
-                    width: `${Math.round((cat.count / MAX) * 100)}%`,
-                    background: cat.bar,
-                  }}
+                  style={{ width: `${Math.round((cat.count / MAX) * 100)}%`, background: cat.bar }}
                 />
               </div>
             </div>
           ))}
         </div>
       </main>
-
       <Footer />
     </div>
   )

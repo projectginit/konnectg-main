@@ -36,6 +36,8 @@ export default function Listings() {
   const navigate = useNavigate()
   const categoryParam = searchParams.get('category')
 
+  const searchQuery = searchParams.get('search')?.toLowerCase() || ''
+
   const [activeFilter, setActiveFilter] = useState('All')
 
   const byCategory = categoryParam
@@ -43,9 +45,20 @@ export default function Listings() {
     : ALL_LISTINGS
 
   const filtered = byCategory.filter((l) => {
+
+    const matchesSearch =
+      !searchQuery ||
+      l.name.toLowerCase().includes(searchQuery) ||
+      l.type.toLowerCase().includes(searchQuery) ||
+      l.category.toLowerCase().includes(searchQuery) ||
+      l.area.toLowerCase().includes(searchQuery)
+
+    if (!matchesSearch) return false
+
     if (activeFilter === 'Verified Only') return l.verified
     if (activeFilter === 'Top Rated') return l.stars >= 5
     if (activeFilter === 'With Offers') return l.offer !== null
+
     return true
   })
 
@@ -64,9 +77,13 @@ export default function Listings() {
               ← All Categories
             </button>
           )}
-          <h1 className="font-display text-3xl font-extrabold text-ink">
-            {categoryParam || 'All Listings'}
-          </h1>
+        <h1 className="font-display text-3xl font-extrabold text-ink">
+          {categoryParam
+            ? categoryParam
+            : searchQuery
+            ? `Search results for "${searchQuery}"`
+            : 'All Listings'}
+        </h1>
           <span className="rounded-full bg-purple-100 px-3 py-1 text-sm font-semibold text-purple-700">
             {filtered.length} results
           </span>
@@ -94,7 +111,9 @@ export default function Listings() {
           <div className="py-24 text-center">
             <p className="text-4xl">🔍</p>
             <p className="mt-3 font-semibold text-ink">No results found.</p>
-            <p className="mt-1 text-sm text-ink-soft">Try a different filter or category.</p>
+            <p className="mt-1 text-sm text-ink-soft">{searchQuery
+              ? `No businesses matched "${searchQuery}".`
+              : 'Try a different filter or category.'}.</p>
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

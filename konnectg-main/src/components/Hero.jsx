@@ -1,12 +1,19 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Hero() {
+  const navigate = useNavigate()
+
   const [query, setQuery] = useState('')
 
   const handleSearch = (e) => {
     e.preventDefault()
-    if (query.trim()) console.log('Searching for:', query)
+
+    const trimmed = query.trim()
+
+    if (!trimmed) return
+
+    navigate(`/listings?search=${encodeURIComponent(trimmed)}`)
   }
 
   return (

@@ -18,6 +18,7 @@ import Verification from './components/admin/Verification'
 import Offers from './components/admin/Offers'
 import Reviews from './components/admin/Reviews'
 import Analytics from './components/admin/Analytics'
+import Approval from './components/admin/Approval'
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true)
@@ -45,6 +46,7 @@ export default function App() {
         <Route path="offers" element={<Offers />}/>
         <Route path="reviews" element={<Reviews />}/>
         <Route path="analytics" element={<Analytics />}/>
+        <Route path="approval" element={<Approval/>}/>
       </Route>
       <Route path="*" element={<NotFound />}/>
     </Routes>

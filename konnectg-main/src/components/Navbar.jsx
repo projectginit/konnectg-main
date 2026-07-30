@@ -1,4 +1,6 @@
 import { NavLink } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
+import { MapPin, ChevronDown } from 'lucide-react'
 
 const LINKS = [
   { label: 'Home', to: '/' },
@@ -11,6 +13,30 @@ const LINKS = [
 ]
 
 export default function Navbar() {
+  const locations = [
+  'Matigara-1',
+  'Matigara-2',
+  'Siliguri',
+  'Pradhan Nagar',
+  'Bagdogra',
+  ]
+
+  const [selectedLocation, setSelectedLocation] = useState(locations[0])
+  const [isOpen, setIsOpen] = useState(false)
+
+  const dropdownRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   return (
     <header
       className="sticky top-0 z-50 px-6"
@@ -60,18 +86,46 @@ export default function Navbar() {
         </nav>
 
         {/* Location pill */}
-        <button
-          className="flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-white transition-all duration-150 hover:bg-white/10"
+        <div className="relative shrink-0" ref={dropdownRef}>
+  <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-white transition-all duration-150 hover:bg-white/10"
+        style={{
+          border: '1.5px solid rgba(245,197,24,0.5)',
+          background: 'rgba(245,197,24,0.08)',
+        }}
+      >
+        <MapPin size={16} className="text-gold" />
+        <span>{selectedLocation}</span>
+
+        <ChevronDown
+          size={16}
+          className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
+
+      {isOpen && (
+        <div
+          className="absolute right-0 mt-2 w-48 overflow-hidden rounded-xl border border-white/10 shadow-xl"
           style={{
-            border: '1.5px solid rgba(245,197,24,0.5)',
-            background: 'rgba(245,197,24,0.08)',
+            background: '#7B0040',
           }}
         >
-          📍Matigara-1
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </button>
+          {locations.map((location) => (
+            <button
+              key={location}
+              onClick={() => {
+                setSelectedLocation(location)
+                setIsOpen(false)
+              }}
+              className="block w-full px-4 py-3 text-left text-sm text-white transition-colors hover:bg-white/10"
+            >
+              📍 {location}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
 
       </div>
     </header>

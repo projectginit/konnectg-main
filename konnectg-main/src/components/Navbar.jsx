@@ -39,7 +39,7 @@ export default function Navbar() {
 
   return (
     <header
-      className="sticky top-0 z-50 px-6"
+      className="relative top-0 z-50 px-6"
       style={{
         background: '#7B0040',
         boxShadow: '0 2px 20px rgba(0,0,0,0.3)',

@@ -1,47 +1,141 @@
-import "../../pages/Admin.css";
+import { Bell, Settings, UserCircle, Search } from "lucide-react";
+
+import "../../pages/admin/Admin.css";
 
 function AdminHeader({
   title,
-  subtitle,
-  buttonText,
-  buttonIcon,
+  subtitle = "",
+
+  buttonText = "",
+  buttonIcon = null,
   onButtonClick,
-  search,
+
+  search = "",
   setSearch,
-  placeholder,
+
+  placeholder = "Search...",
+
+  onNotificationClick,
+  onSettingsClick,
+  onProfileClick,
 }) {
+  const handleSearchChange = (event) => {
+    if (typeof setSearch === "function") {
+      setSearch(event.target.value);
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (typeof onButtonClick === "function") {
+      onButtonClick();
+    }
+  };
+
+  const handleNotificationClick = () => {
+    if (typeof onNotificationClick === "function") {
+      onNotificationClick();
+    }
+  };
+
+  const handleSettingsClick = () => {
+    if (typeof onSettingsClick === "function") {
+      onSettingsClick();
+    }
+  };
+
+  const handleProfileClick = () => {
+    if (typeof onProfileClick === "function") {
+      onProfileClick();
+    }
+  };
+
   return (
-    <div className="admin-page-header">
+    <header className="admin-page-header">
+      {/* ==================================================
+                        HEADER TOP
+      ================================================== */}
+
       <div className="admin-page-header-top">
-        <div>
+        <div className="admin-page-header-content">
           <h1>{title}</h1>
 
-          <p>{subtitle}</p>
+          {subtitle && <p>{subtitle}</p>}
         </div>
+
+        {/* ==================================================
+                        HEADER ACTIONS
+        ================================================== */}
 
         <div className="admin-header-actions">
-          <button className="header-icon-btn">🔔</button>
+          <button
+            type="button"
+            className="header-icon-btn"
+            aria-label="Notifications"
+            title="Notifications"
+            onClick={handleNotificationClick}
+          >
+            <Bell size={19} />
+          </button>
 
-          <button className="header-icon-btn">⚙️</button>
+          <button
+            type="button"
+            className="header-icon-btn"
+            aria-label="Settings"
+            title="Settings"
+            onClick={handleSettingsClick}
+          >
+            <Settings size={19} />
+          </button>
 
-          <button className="header-icon-btn">👤</button>
+          <button
+            type="button"
+            className="header-icon-btn"
+            aria-label="Admin profile"
+            title="Admin profile"
+            onClick={handleProfileClick}
+          >
+            <UserCircle size={20} />
+          </button>
         </div>
       </div>
 
-      <div className="admin-toolbar">
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder={placeholder}
-          className="admin-search"
-        />
+      {/* ==================================================
+                        TOOLBAR
+      ================================================== */}
 
-        <button className="admin-add-btn" onClick={onButtonClick}>
-          {buttonIcon} {buttonText}
-        </button>
+      <div className="admin-toolbar">
+        {/* SEARCH */}
+
+        <div className="admin-search-wrapper">
+          <Search size={18} className="admin-search-icon" />
+
+          <input
+            type="search"
+            value={search}
+            onChange={handleSearchChange}
+            placeholder={placeholder}
+            className="admin-search"
+            aria-label={placeholder}
+          />
+        </div>
+
+        {/* ACTION BUTTON */}
+
+        {buttonText && (
+          <button
+            type="button"
+            className="admin-add-btn"
+            onClick={handleButtonClick}
+          >
+            {buttonIcon && (
+              <span className="admin-button-icon">{buttonIcon}</span>
+            )}
+
+            <span>{buttonText}</span>
+          </button>
+        )}
       </div>
-    </div>
+    </header>
   );
 }
 

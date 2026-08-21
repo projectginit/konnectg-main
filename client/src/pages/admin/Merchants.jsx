@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import "../../pages/Admin.css";
-import MerchantCard from "./MerchantCard";
-import MerchantModal from "./MerchantModal";
-import AdminHeader from "./AdminHeader";
+import "./Admin.css";
+import MerchantCard from "../../components/admin/merchants/MerchantCard";
+import MerchantModal from "../../components/admin/merchants/MerchantModal";
+import AdminHeader from "../../components/admin/AdminHeader";
 
 function Merchants() {
   const [search, setSearch] = useState("");

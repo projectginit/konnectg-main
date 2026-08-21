@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const businessSchema = new mongoose.Schema(
   {
-    // =========================
+    // ==========================================
     // BASIC INFORMATION
-    // =========================
+    // ==========================================
 
     name: {
       type: String,
@@ -24,9 +24,9 @@ const businessSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // =========================
-    // BUSINESS OWNER
-    // =========================
+    // ==========================================
+    // OWNER
+    // ==========================================
 
     owner: {
       type: mongoose.Schema.Types.ObjectId,
@@ -34,9 +34,9 @@ const businessSchema = new mongoose.Schema(
       required: true,
     },
 
-    // =========================
-    // CONTACT INFORMATION
-    // =========================
+    // ==========================================
+    // CONTACT
+    // ==========================================
 
     phone: {
       type: String,
@@ -51,9 +51,9 @@ const businessSchema = new mongoose.Schema(
       lowercase: true,
     },
 
-    // =========================
+    // ==========================================
     // LOCATION
-    // =========================
+    // ==========================================
 
     address: {
       type: String,
@@ -83,9 +83,9 @@ const businessSchema = new mongoose.Schema(
       },
     },
 
-    // =========================
+    // ==========================================
     // MEDIA
-    // =========================
+    // ==========================================
 
     logo: {
       type: String,
@@ -98,19 +98,13 @@ const businessSchema = new mongoose.Schema(
       },
     ],
 
-    // =========================
-    // ADMIN WORKFLOW
-    // =========================
+    // ==========================================
+    // APPROVAL
+    // ==========================================
 
     approvalStatus: {
       type: String,
       enum: ["pending", "approved", "rejected"],
-      default: "pending",
-    },
-
-    verificationStatus: {
-      type: String,
-      enum: ["pending", "verified", "rejected"],
       default: "pending",
     },
 
@@ -119,9 +113,19 @@ const businessSchema = new mongoose.Schema(
       default: "",
     },
 
-    // =========================
+    // ==========================================
+    // VERIFICATION
+    // ==========================================
+
+    verificationStatus: {
+      type: String,
+      enum: ["pending", "verified", "rejected"],
+      default: "pending",
+    },
+
+    // ==========================================
     // BUSINESS STATUS
-    // =========================
+    // ==========================================
 
     isActive: {
       type: Boolean,
@@ -133,9 +137,9 @@ const businessSchema = new mongoose.Schema(
       default: false,
     },
 
-    // =========================
+    // ==========================================
     // ANALYTICS
-    // =========================
+    // ==========================================
 
     rating: {
       type: Number,
@@ -154,7 +158,6 @@ const businessSchema = new mongoose.Schema(
       default: 0,
     },
   },
-
   {
     timestamps: true,
   }

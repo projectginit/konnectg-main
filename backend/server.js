@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ app.get("/", (req, res) => {
     message: "KonnectG API is running",
   });
 });
+
+app.use("/api/auth", authRoutes);
 
 // Start server
 app.listen(PORT, () => {

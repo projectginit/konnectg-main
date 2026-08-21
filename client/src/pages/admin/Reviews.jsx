@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import "../../pages/Admin.css";
-import AdminHeader from "./AdminHeader";
-import ReviewCard from "./ReviewCard";
-import ReviewModal from "./ReviewModal";
+import "./Admin.css";
+import AdminHeader from "../../components/admin/AdminHeader";
+import ReviewCard from "../../components/admin/review/ReviewCard";
+import ReviewModal from "../../components/admin/review/ReviewModal";
 
 function Reviews() {
   const [search, setSearch] = useState("");

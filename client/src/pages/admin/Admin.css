@@ -3,7 +3,7 @@
                     PART 1 - LAYOUT
 ========================================================== */
 
-@import "../index.css";
+@import "../../index.css";
 
 /* ==========================================================
                     ROOT VARIABLES
@@ -49,95 +49,186 @@ body {
 }
 
 /* ==========================================================
+                    ADMIN SHELL
+========================================================== */
+
+.admin-shell {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--background);
+}
+
+/* ==========================================================
                     ADMIN LAYOUT
 ========================================================== */
 
 .admin-layout {
   display: flex;
-  min-height: calc(100vh - 70px);
-  background: var(--background);
+
+  flex: 1;
+
+  width: 100%;
+  min-width: 0;
 }
 
 /* ==========================================================
-                    SIDEBAR
+                    ADMIN SIDEBAR
 ========================================================== */
 
 .admin-sidebar {
-  width: clamp(240px, 18vw, 280px);
-  min-height: 100vh;
-  background: var(--primary);
-  color: white;
   display: flex;
   flex-direction: column;
-  position: sticky;
-  top: 0;
-  left: 0;
-  flex-shrink: 0;
-  box-shadow: 4px 0 18px rgba(0, 0, 0, 0.12);
-  z-index: 100;
+
+  width: 250px;
+  min-width: 250px;
+
+  height: 100%;
+
+  padding: 20px 14px;
+
+  background: var(--surface);
+
+  border-right: 1px solid var(--border);
 }
 
+
 /* ==========================================================
-                    SIDEBAR BUTTONS
+                    SIDEBAR NAVIGATION
+========================================================== */
+
+.admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+/* ==========================================================
+                    SIDEBAR BUTTON
 ========================================================== */
 
 .admin-sidebar-button {
-  width: 100%;
   display: flex;
+
+  width: 100%;
+
   align-items: center;
-  gap: 14px;
-  padding: 16px 24px;
-  border: none;
+
+  gap: 12px;
+
+  padding: 12px 14px;
+
+  border: 1px solid transparent;
+
+  border-radius: 10px;
+
   background: transparent;
-  color: white;
-  cursor: pointer;
-  font-size: 15px;
+
+  color: var(--text-light);
+
+  font-size: 14px;
   font-weight: 600;
-  transition: 0.25s;
+
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .admin-sidebar-button:hover {
-  background: var(--primary-hover);
+  background: #faf3f7;
+
+  color: var(--primary);
 }
 
-.admin-sidebar-button.active {
-  background: #ffffff20;
-  border-left: 4px solid white;
+.admin-sidebar-button-active {
+  background: #f7e9ef;
+
+  border-color: #ead1df;
+
+  color: var(--primary);
 }
+
 
 /* ==========================================================
-                    PROFILE
+                    SIDEBAR ICON
+========================================================== */
+
+.admin-sidebar-icon {
+  display: flex;
+
+  width: 22px;
+  min-width: 22px;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 17px;
+}
+
+
+/* ==========================================================
+                    ADMIN PROFILE
 ========================================================== */
 
 .dash-profile {
-  margin-top: auto;
   display: flex;
+
   align-items: center;
-  gap: 14px;
-  padding: 18px 22px;
+
+  gap: 12px;
+
+  margin-top: auto;
+
+  padding: 14px;
+
+  border-top: 1px solid var(--border);
+
+  color: var(--text);
+
+  text-decoration: none;
+
   cursor: pointer;
-  transition: 0.25s;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .dash-profile:hover {
-  background: var(--primary-hover);
+  background: #faf3f7;
+
+  color: var(--primary);
+}
+
+.dash-profile-active {
+  color: var(--primary);
 }
 
 .dash-profile-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #ffffff22;
   display: flex;
+
+  width: 38px;
+  height: 38px;
+
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+
+  border-radius: 50%;
+
+  background: #f7e9ef;
+
+  font-size: 18px;
 }
 
 .dash-profile-name {
+  font-size: 14px;
   font-weight: 700;
-  font-size: 15px;
 }
 
 /* ==========================================================
@@ -146,8 +237,13 @@ body {
 
 .admin-content {
   flex: 1;
+
+  min-width: 0;
+
   padding: 32px;
-  width: 100%;
+
+  background: var(--background);
+
   overflow-x: hidden;
 }
 
@@ -157,6 +253,51 @@ body {
   width: 100%;
   max-width: 1400px;
   margin: auto;
+}
+
+/* ==========================================================
+                    DESKTOP
+========================================================== */
+
+@media (min-width: 1201px) {
+  .admin-content {
+    padding: 34px 40px;
+  }
+}
+
+/* ==========================================================
+                    TABLET
+========================================================== */
+
+@media (max-width: 1200px) {
+  .admin-content {
+    padding: 28px;
+  }
+}
+
+/* ==========================================================
+                    MOBILE
+========================================================== */
+
+@media (max-width: 768px) {
+
+  .admin-layout {
+    display: block;
+  }
+
+  .admin-content {
+    width: 100%;
+
+    padding: 22px 18px;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .admin-content {
+    padding: 18px 14px;
+  }
 }
 
 /* ==========================================================
@@ -320,10 +461,34 @@ body {
 }
 
 .admin-card-link {
-  margin-top: 16px;
+  margin-top: 14px;
+
   color: var(--primary);
+
+  font-size: 13px;
   font-weight: 700;
-  font-size: 14px;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-card-clickable:hover .admin-card-link {
+  color: var(--primary-dark);
+}
+
+
+/* ==========================================================
+                    CARD HOVER
+========================================================== */
+
+.admin-card-clickable:hover {
+  transform: translateY(-4px);
+
+  border-color: #e9d5e5;
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
 /* ==========================================================
@@ -1301,143 +1466,279 @@ const [open,setOpen]=useState(false)
   }
 }
 
-/* ==================================================
-                ADMIN PAGE HEADER
-================================================== */
+/* ==========================================================
+                    ADMIN HEADER
+========================================================== */
 
 .admin-page-header {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 24px;
-
-  margin-bottom: 30px;
+  width: 100%;
+  margin-bottom: 28px;
 }
 
 .admin-page-header-top {
   display: flex;
-
+  align-items: flex-start;
   justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+}
 
-  align-items: center;
+.admin-page-header-content {
+  min-width: 0;
 }
 
 .admin-page-header h1 {
-  font-size: 34px;
-
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(24px, 3vw, 32px);
   font-weight: 800;
+  line-height: 1.2;
 }
 
 .admin-page-header p {
+  margin: 7px 0 0;
   color: var(--text-light);
-
-  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.5;
 }
+
+
+/* ==========================================================
+                    HEADER ACTIONS
+========================================================== */
 
 .admin-header-actions {
   display: flex;
-
-  gap: 14px;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .header-icon-btn {
-  width: 48px;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
 
-  height: 48px;
+  padding: 0;
 
-  border: none;
+  border: 1px solid var(--border);
+  border-radius: 10px;
 
-  border-radius: 12px;
-
-  background: white;
+  background: var(--surface);
+  color: var(--text-light);
 
   cursor: pointer;
 
-  box-shadow: var(--shadow);
-
-  font-size: 18px;
-
-  transition: 0.25s;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .header-icon-btn:hover {
-  transform: translateY(-2px);
+  border-color: #d9b6cf;
+  background: #faf5f8;
+  color: var(--primary);
+  transform: translateY(-1px);
 }
+
+.header-icon-btn:active {
+  transform: translateY(0);
+}
+
+.header-icon-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+
+/* ==========================================================
+                    ADMIN TOOLBAR
+========================================================== */
 
 .admin-toolbar {
   display: flex;
-
-  justify-content: space-between;
-
+  width: 100%;
   align-items: center;
+  gap: 14px;
+}
 
-  gap: 20px;
+.admin-search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+
+  color: var(--text-light);
+
+  pointer-events: none;
+
+  transform: translateY(-50%);
 }
 
 .admin-search {
-  flex: 1;
+  width: 100%;
+  min-height: 46px;
 
-  max-width: 500px;
-
-  padding: 14px 18px;
-
-  border-radius: 12px;
+  padding: 0 15px 0 42px;
 
   border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--surface);
+  color: var(--text);
+
+  font-size: 14px;
 
   outline: none;
 
-  font-size: 15px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-search::placeholder {
+  color: #999;
 }
 
 .admin-search:focus {
   border-color: var(--primary);
+
+  box-shadow:
+    0 0 0 3px rgba(123, 0, 64, 0.08);
 }
 
-.admin-add-btn {
-  background: var(--primary);
 
-  color: white;
+/* ==========================================================
+                    HEADER ACTION BUTTON
+========================================================== */
+
+.admin-add-btn {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  flex-shrink: 0;
+
+  padding: 0 18px;
 
   border: none;
+  border-radius: 10px;
 
-  padding: 14px 24px;
+  background: var(--primary);
+  color: white;
 
-  border-radius: 12px;
-
+  font-size: 14px;
   font-weight: 700;
 
   cursor: pointer;
 
-  transition: 0.25s;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .admin-add-btn:hover {
-  background: var(--primary-hover);
+  background: var(--primary-dark);
+
+  box-shadow:
+    0 6px 16px rgba(123, 0, 64, 0.18);
+
+  transform: translateY(-1px);
 }
 
+.admin-add-btn:active {
+  transform: translateY(0);
+}
+
+.admin-add-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.admin-button-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+
+/* ==========================================================
+                    RESPONSIVE
+========================================================== */
+
 @media (max-width: 768px) {
+
+  .admin-page-header {
+    margin-bottom: 24px;
+  }
+
   .admin-page-header-top {
-    flex-direction: column;
+    gap: 16px;
+  }
 
-    align-items: flex-start;
+  .admin-page-header h1 {
+    font-size: 25px;
+  }
 
-    gap: 18px;
+  .admin-header-actions {
+    gap: 6px;
+  }
+
+  .header-icon-btn {
+    width: 38px;
+    height: 38px;
   }
 
   .admin-toolbar {
-    flex-direction: column;
-
     align-items: stretch;
-  }
-
-  .admin-search {
-    max-width: 100%;
+    flex-direction: column;
   }
 
   .admin-add-btn {
     width: 100%;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .admin-page-header-top {
+    flex-direction: column;
+  }
+
+  .admin-header-actions {
+    width: 100%;
+  }
+
+  .header-icon-btn {
+    flex: 1;
+  }
+
+  .admin-page-header h1 {
+    font-size: 23px;
+  }
+
+  .admin-page-header p {
+    font-size: 13px;
+  }
+
+  .admin-search {
+    min-height: 44px;
+  }
+
+  .admin-add-btn {
+    min-height: 44px;
   }
 }
 
@@ -2954,4 +3255,23 @@ const [open,setOpen]=useState(false)
   .graph-card {
     padding: 18px;
   }
+}
+
+/* ==========================================================
+                    ADMIN CARD LINK
+========================================================== */
+
+.admin-card-clickable {
+  display: flex;
+  flex-direction: column;
+
+  color: inherit;
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.admin-card-clickable:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
 }

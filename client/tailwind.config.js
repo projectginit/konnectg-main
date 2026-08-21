@@ -1,45 +1,141 @@
+// /** @type {import('tailwindcss').Config} */
+// export default {
+//   content: ['./index.html', './src/**/*.{js,jsx}'],
+//   theme: {
+//     extend: {
+//       colors: {
+//         ink: '#1A000D',
+//         'ink-soft': '#5A3347',
+//         purple: {
+//           900: '#3D0020',
+//           700: '#7B0040',
+//           600: '#8F0049',
+//           100: '#F5D6E4',
+//           50: '#FAF0F5',
+//         },
+//         gold: {
+//           DEFAULT: '#3D5A1A',
+//           dark: '#2D4412',
+//         },
+//         coral: '#B5003A',
+//         paper: '#E5E2C8',
+//       },
+//       fontFamily: {
+//         display: ['Poppins', 'sans-serif'],
+//         body: ['Inter', 'sans-serif'],
+//         mono: ['"Space Mono"', 'monospace'],
+//       },
+//       keyframes: {
+//         marquee: {
+//           '0%': { transform: 'translateX(0)' },
+//           '100%': { transform: 'translateX(-50%)' },
+//         },
+//         floatY: {
+//           '0%, 100%': { transform: 'translateY(0)' },
+//           '50%': { transform: 'translateY(-10px)' },
+//         },
+//       },
+//       animation: {
+//         marquee: 'marquee 22s linear infinite',
+//         floatY: 'floatY 4s ease-in-out infinite',
+//       },
+//     },
+//   },
+//   plugins: [],
+// }
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,jsx}",
+  ],
+
   theme: {
     extend: {
+      /* ======================================================
+                            COLORS
+      ====================================================== */
+
       colors: {
-        ink: '#1A000D',
-        'ink-soft': '#5A3347',
+        ink: "#1F1535",
+
+        "ink-soft": "#6B6570",
+
+        paper: "#FBF8F2",
+
         purple: {
-          900: '#3D0020',
-          700: '#7B0040',
-          600: '#8F0049',
-          100: '#F5D6E4',
-          50: '#FAF0F5',
+          900: "#3D0020",
+          700: "#7B0040",
+          600: "#8F0049",
+          100: "#F5D6E4",
+          50: "#FAF0F5",
         },
+
         gold: {
-          DEFAULT: '#3D5A1A',
-          dark: '#2D4412',
+          DEFAULT: "#F5C518",
+          dark: "#B08A00",
         },
-        coral: '#B5003A',
-        paper: '#E5E2C8',
+
+        coral: "#FF6B6B",
       },
+
+      /* ======================================================
+                          TYPOGRAPHY
+      ====================================================== */
+
       fontFamily: {
-        display: ['Poppins', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
-        mono: ['"Space Mono"', 'monospace'],
+        display: [
+          "Manrope",
+          "sans-serif",
+        ],
+
+        body: [
+          "Manrope",
+          "sans-serif",
+        ],
+
+        mono: [
+          '"Space Mono"',
+          "monospace",
+        ],
       },
+
+      /* ======================================================
+                          ANIMATIONS
+      ====================================================== */
+
       keyframes: {
         marquee: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
+          "0%": {
+            transform: "translateX(0)",
+          },
+
+          "100%": {
+            transform: "translateX(-50%)",
+          },
         },
+
         floatY: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
+          "0%, 100%": {
+            transform: "translateY(0)",
+          },
+
+          "50%": {
+            transform: "translateY(-10px)",
+          },
         },
       },
+
       animation: {
-        marquee: 'marquee 22s linear infinite',
-        floatY: 'floatY 4s ease-in-out infinite',
+        marquee:
+          "marquee 22s linear infinite",
+
+        floatY:
+          "floatY 4s ease-in-out infinite",
       },
     },
   },
+
   plugins: [],
-}
+};

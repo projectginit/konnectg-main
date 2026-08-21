@@ -1,6 +1,6 @@
-import "../../pages/Admin.css";
-import AdminHeader from "./AdminHeader";
-import AdminCard from "./AdminCard";
+import "./Admin.css";
+import AdminHeader from "../../components/admin/AdminHeader";
+import AdminCard from "../../components/admin/AdminCard";
 
 import {
   ResponsiveContainer,

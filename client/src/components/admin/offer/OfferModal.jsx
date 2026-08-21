@@ -1,5 +1,4 @@
-import "../../pages/Admin.css";
-
+import "../../../pages/admin/Admin.css";
 function OfferModal({ offer, onClose }) {
   if (!offer) return null;
 

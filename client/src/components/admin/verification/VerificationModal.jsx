@@ -1,5 +1,4 @@
-import "../../pages/Admin.css";
-
+import "../../../pages/admin/Admin.css";
 function VerificationModal({ business, onClose }) {
   if (!business) return null;
 

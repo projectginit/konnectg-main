@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import "../../pages/Admin.css";
-import AdminHeader from "./AdminHeader";
-import OfferCard from "./OfferCard";
-import OfferModal from "./OfferModal";
+import "./Admin.css";
+import AdminHeader from "../../components/admin/AdminHeader";
+import OfferCard from "../../components/admin/offer/OfferCard";
+import OfferModal from "../../components/admin/offer/OfferModal";
 
 function Offers() {
   const [search, setSearch] = useState("");

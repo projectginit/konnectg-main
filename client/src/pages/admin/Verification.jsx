@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import "../../pages/Admin.css";
-import VerificationCard from "./VerificationCard";
-import VerificationModal from "./VerificationModal";
-import AdminHeader from "./AdminHeader";
+import "./Admin.css";
+import VerificationCard from "../../components/admin/verification/VerificationCard";
+import VerificationModal from "../../components/admin/verification/VerificationModal";
+import AdminHeader from "../../components/admin/AdminHeader";
 
 function Verification() {
   const [search, setSearch] = useState("");

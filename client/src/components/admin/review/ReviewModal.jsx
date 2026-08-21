@@ -1,5 +1,4 @@
-import "../../pages/Admin.css";
-
+import "../../../pages/admin/Admin.css";
 function ReviewModal({ review, onClose }) {
   if (!review) return null;
 

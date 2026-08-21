@@ -1,4 +1,4 @@
-import "../../pages/Admin.css";
+import "../../../pages/admin/Admin.css";
 
 function ApprovalCard({ merchant }) {
 

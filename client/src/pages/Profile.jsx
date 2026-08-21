@@ -1,195 +1,647 @@
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
+import { Link } from "react-router-dom";
 
-const OFFERS = [
-  { pill: '20% OFF', title: 'On all lunch thalis', valid: 'Valid till Dec 31' },
-  { pill: 'FREE', title: 'Dessert on orders ₹500+', valid: 'Valid till Jan 15' },
-]
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
 
-const GALLERY = [
-  'linear-gradient(135deg, #FFD5B8, #FFB5A0)',
-  'linear-gradient(135deg, #FFF3B0, #FFE870)',
-  'linear-gradient(135deg, #FFD9F0, #FFC0E8)',
-]
+/* ==========================================================
+                    TEMPORARY USER DATA
+========================================================== */
+/*
+  Temporary frontend data.
 
-const HOURS = [
-  { day: 'Mon - Sat', time: '10:00 AM - 10:00 PM' },
-  { day: 'Sunday', time: '11:00 AM - 9:00 PM' },
-]
+  Later this will come from:
 
-const REVIEWS = [
+  GET /api/users/me
+
+  and, after authentication:
+
+  GET /api/users/me/saved
+  GET /api/users/me/reviews
+*/
+
+const USER = {
+  name: "KonnectG User",
+  email: "user@example.com",
+  phone: "+91 9876543210",
+  joined: "June 2026",
+};
+
+/* ==========================================================
+                    SAVED BUSINESSES
+========================================================== */
+
+const SAVED_BUSINESSES = [
   {
-    initials: 'RS',
-    avatarBg: '#EDE3FB',
-    avatarColor: '#7C3AED',
-    name: 'Rahul S.',
-    time: '2 days ago',
-    stars: 5,
-    text: 'Amazing food and great ambience. The butter chicken is a must-try!',
+    id: "1",
+    name: "Saffron Kitchen",
+    category: "Restaurants & Food",
+    area: "Matigara",
+    rating: 4.8,
+    verified: true,
   },
   {
-    initials: 'PD',
-    avatarBg: '#D6F5E3',
-    avatarColor: '#16A974',
-    name: 'Priya D.',
-    time: '1 week ago',
-    stars: 4,
-    text: 'Good food quality. Delivery was quick. Will order again.',
+    id: "12",
+    name: "Ananya Beauty Studio",
+    category: "Beauty & Wellness",
+    area: "Medical",
+    rating: 4.9,
+    verified: true,
   },
-]
+];
 
-function StarRating({ count }) {
-  return (
-    <span className="text-gold-dark">
-      {'★'.repeat(count)}{'☆'.repeat(5 - count)}
-    </span>
-  )
-}
+/* ==========================================================
+                        USER PROFILE
+========================================================== */
 
 export default function Profile() {
   return (
     <div className="min-h-screen bg-[#F7F6FA]">
+      {/* ==================================================
+                            NAVBAR
+      ================================================== */}
+
       <Navbar />
 
-      <div className="relative">
-        {/* Purple cover banner */}
-        <div className="h-48 w-full bg-gradient-to-br from-purple-900 via-purple-700 to-purple-500" />
+      <main
+        className="
+          mx-auto
+          w-full
+          max-w-6xl
+          px-5
+          py-10
+          sm:px-6
+          sm:py-12
+        "
+      >
+        {/* ==================================================
+                            PAGE HEADER
+        ================================================== */}
 
-        <div className="mx-auto max-w-4xl px-6">
+        <section
+          className="
+            overflow-hidden
+            rounded-3xl
+            bg-gradient-to-br
+            from-purple-900
+            via-purple-700
+            to-purple-500
+            px-6
+            py-8
+            text-white
+            sm:px-8
+            sm:py-10
+          "
+        >
+          <div
+            className="
+              flex
+              flex-col
+              gap-5
+              sm:flex-row
+              sm:items-center
+              sm:justify-between
+            "
+          >
+            <div
+              className="
+                flex
+                items-center
+                gap-4
+              "
+            >
+              {/* ==================================================
+                                AVATAR
+              ================================================== */}
 
-          {/* Logo + Info + Buttons */}
-          <div className="relative -mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="flex items-end gap-4">
-              {/* Icon */}
-              <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border-4 border-white bg-white shadow-lg text-4xl">
-                🍽️
-              </div>
-              {/* Name + meta */}
-              <div className="pb-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="font-display text-2xl font-extrabold text-ink">
-                    Saffron Kitchen
-                  </h1>
-                  <span className="flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-bold text-emerald-600">
-                    ✓ Verified
-                  </span>
-                </div>
-                <p className="mt-0.5 text-sm text-ink-soft">
-                  North Indian Restaurant • Matigara-1
-                </p>
-                <div className="mt-1.5 flex flex-wrap items-center gap-2">
-                  <span className="text-sm text-gold-dark">★★★★★</span>
-                  <span className="text-sm text-ink-soft">4.8 (94 reviews)</span>
-                  <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-600">
-                    Open Now
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Action buttons */}
-            <div className="flex gap-3 pb-1">
-              <button className="flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-600">
-                📞 Call
-              </button>
-              <button className="flex items-center gap-2 rounded-full bg-purple-800 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-purple-700">
-                💬 WhatsApp
-              </button>
-            </div>
-          </div>
-
-          {/* Active Offers */}
-          <div className="mt-6 rounded-2xl bg-[#FFFBEA] p-5">
-            <h2 className="mb-4 font-display text-base font-bold text-ink">
-              🔥 Active Offers
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {OFFERS.map((o) => (
-                <div key={o.title} className="rounded-xl bg-white p-4 shadow-sm">
-                  <span className="mb-2 inline-block rounded-full bg-gold px-3 py-1 text-xs font-bold text-purple-900">
-                    {o.pill}
-                  </span>
-                  <p className="font-semibold text-ink">{o.title}</p>
-                  <p className="text-sm text-ink-soft">{o.valid}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Gallery */}
-          <div className="mt-6">
-            <h2 className="mb-4 font-display text-lg font-bold text-ink">Gallery</h2>
-            <div className="grid grid-cols-3 gap-4">
-              {GALLERY.map((bg, i) => (
-                <div
-                  key={i}
-                  className="h-44 rounded-2xl"
-                  style={{ background: bg }}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Business Hours */}
-          <div className="mt-6 rounded-2xl border border-[#EFEDF5] bg-white p-5">
-            <h2 className="mb-4 font-display text-base font-bold text-ink">
-              Business Hours
-            </h2>
-            {HOURS.map((h) => (
               <div
-                key={h.day}
-                className="flex justify-between border-b border-[#F5F3FA] py-2.5 text-sm last:border-0"
+                className="
+                  flex
+                  h-16
+                  w-16
+                  shrink-0
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-white
+                  text-2xl
+                  font-bold
+                  text-purple-700
+                  shadow-lg
+                  sm:h-20
+                  sm:w-20
+                  sm:text-3xl
+                "
               >
-                <span className="text-ink">{h.day}</span>
-                <span className="font-medium text-purple-700">{h.time}</span>
+                {USER.name.charAt(0)}
               </div>
-            ))}
-          </div>
 
-          {/* Map placeholder */}
-          <div className="mt-6 flex h-32 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-[#E8F5F0] to-[#D6EEF8]">
-            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-purple-700 text-white">
-              📍
-            </div>
-            <p className="text-sm text-ink-soft">Matigara-1, Near SBI Branch</p>
-          </div>
+              {/* ==================================================
+                                USER INFO
+              ================================================== */}
 
-          {/* Reviews */}
-          <div className="mb-12 mt-6">
-            <h2 className="mb-4 font-display text-lg font-bold text-ink">Reviews</h2>
-            <div className="flex flex-col">
-              {REVIEWS.map((r) => (
-                <div
-                  key={r.name}
-                  className="border-b border-[#F0EEF6] py-5 last:border-0"
+              <div>
+                <h1
+                  className="
+                    text-2xl
+                    font-extrabold
+                    sm:text-3xl
+                  "
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold"
-                        style={{ background: r.avatarBg, color: r.avatarColor }}
-                      >
-                        {r.initials}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-ink">{r.name}</p>
-                        <p className="text-xs text-ink-soft">{r.time}</p>
-                      </div>
-                    </div>
-                    <StarRating count={r.stars} />
-                  </div>
-                  <p className="mt-3 pl-12 text-sm leading-relaxed text-ink">
-                    {r.text}
+                  {USER.name}
+                </h1>
+
+                <p
+                  className="
+                    mt-1
+                    text-sm
+                    text-purple-100
+                  "
+                >
+                  {USER.email}
+                </p>
+
+                <p
+                  className="
+                    mt-1
+                    text-xs
+                    text-purple-200
+                  "
+                >
+                  Member since {USER.joined}
+                </p>
+              </div>
+            </div>
+
+            {/* ==================================================
+                            EDIT PROFILE
+            ================================================== */}
+
+            <button
+              type="button"
+              className="
+                rounded-full
+                bg-white/10
+                px-5
+                py-2.5
+                text-sm
+                font-semibold
+                text-white
+                transition
+                hover:bg-white/20
+              "
+            >
+              Edit Profile
+            </button>
+          </div>
+        </section>
+
+        {/* ==================================================
+                        CONTENT GRID
+        ================================================== */}
+
+        <div
+          className="
+            mt-6
+            grid
+            gap-6
+            lg:grid-cols-[1fr_320px]
+          "
+        >
+          {/* ==================================================
+                            LEFT COLUMN
+          ================================================== */}
+
+          <div className="space-y-6">
+            {/* ==================================================
+                        SAVED BUSINESSES
+            ================================================== */}
+
+            <section
+              className="
+                rounded-2xl
+                border
+                border-[#EFEDF5]
+                bg-white
+                p-6
+                shadow-sm
+              "
+            >
+              <div
+                className="
+                  flex
+                  items-center
+                  justify-between
+                  gap-3
+                "
+              >
+                <div>
+                  <h2
+                    className="
+                      text-xl
+                      font-bold
+                      text-slate-800
+                    "
+                  >
+                    Saved Businesses
+                  </h2>
+
+                  <p
+                    className="
+                      mt-1
+                      text-sm
+                      text-slate-500
+                    "
+                  >
+                    Businesses you&apos;ve saved for later.
                   </p>
                 </div>
-              ))}
-            </div>
+
+                <span
+                  className="
+                    rounded-full
+                    bg-purple-100
+                    px-3
+                    py-1
+                    text-xs
+                    font-bold
+                    text-purple-700
+                  "
+                >
+                  {SAVED_BUSINESSES.length}
+                </span>
+              </div>
+
+              <div className="mt-6 space-y-3">
+                {SAVED_BUSINESSES.map((business) => (
+                  <Link
+                    key={business.id}
+                    to={`/businesses/${business.id}`}
+                    className="
+                        flex
+                        flex-col
+                        gap-3
+                        rounded-xl
+                        border
+                        border-[#F0EEF6]
+                        p-4
+                        transition
+                        hover:border-purple-100
+                        hover:bg-purple-50/40
+                        sm:flex-row
+                        sm:items-center
+                        sm:justify-between
+                      "
+                  >
+                    <div>
+                      <div
+                        className="
+                            flex
+                            flex-wrap
+                            items-center
+                            gap-2
+                          "
+                      >
+                        <h3
+                          className="
+                              font-semibold
+                              text-slate-800
+                            "
+                        >
+                          {business.name}
+                        </h3>
+
+                        {business.verified && (
+                          <span
+                            className="
+                                rounded-full
+                                bg-emerald-50
+                                px-2
+                                py-0.5
+                                text-[11px]
+                                font-bold
+                                text-emerald-600
+                              "
+                          >
+                            ✓ Verified
+                          </span>
+                        )}
+                      </div>
+
+                      <p
+                        className="
+                            mt-1
+                            text-sm
+                            text-slate-500
+                          "
+                      >
+                        {business.category}
+                        {" • "}
+                        {business.area}
+                      </p>
+                    </div>
+
+                    <div
+                      className="
+                          flex
+                          items-center
+                          gap-1
+                          text-sm
+                          font-semibold
+                          text-amber-500
+                        "
+                    >
+                      ★ {business.rating}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+
+            {/* ==================================================
+                            MY REVIEWS
+            ================================================== */}
+
+            <section
+              className="
+                rounded-2xl
+                border
+                border-[#EFEDF5]
+                bg-white
+                p-6
+                shadow-sm
+              "
+            >
+              <h2
+                className="
+                  text-xl
+                  font-bold
+                  text-slate-800
+                "
+              >
+                My Reviews
+              </h2>
+
+              <p
+                className="
+                  mt-1
+                  text-sm
+                  text-slate-500
+                "
+              >
+                Reviews you&apos;ve posted on KonnectG.
+              </p>
+
+              <div
+                className="
+                  mt-6
+                  rounded-xl
+                  border
+                  border-dashed
+                  border-slate-200
+                  px-5
+                  py-10
+                  text-center
+                "
+              >
+                <div className="text-3xl">⭐</div>
+
+                <p
+                  className="
+                    mt-3
+                    text-sm
+                    font-semibold
+                    text-slate-700
+                  "
+                >
+                  No reviews yet
+                </p>
+
+                <p
+                  className="
+                    mx-auto
+                    mt-1
+                    max-w-sm
+                    text-xs
+                    leading-5
+                    text-slate-500
+                  "
+                >
+                  Visit a local business and share your experience with the
+                  community.
+                </p>
+
+                <Link
+                  to="/listings"
+                  className="
+                    mt-4
+                    inline-flex
+                    rounded-full
+                    bg-purple-50
+                    px-5
+                    py-2.5
+                    text-sm
+                    font-semibold
+                    text-purple-700
+                    transition
+                    hover:bg-purple-100
+                  "
+                >
+                  Browse Businesses
+                </Link>
+              </div>
+            </section>
           </div>
 
+          {/* ==================================================
+                            RIGHT COLUMN
+          ================================================== */}
+
+          <aside className="space-y-6">
+            {/* ==================================================
+                            ACCOUNT INFO
+            ================================================== */}
+
+            <section
+              className="
+                rounded-2xl
+                border
+                border-[#EFEDF5]
+                bg-white
+                p-6
+                shadow-sm
+              "
+            >
+              <h2
+                className="
+                  text-lg
+                  font-bold
+                  text-slate-800
+                "
+              >
+                Account Information
+              </h2>
+
+              <div className="mt-5 space-y-5">
+                <div>
+                  <p
+                    className="
+                      text-xs
+                      font-semibold
+                      uppercase
+                      tracking-wide
+                      text-slate-400
+                    "
+                  >
+                    Name
+                  </p>
+
+                  <p
+                    className="
+                      mt-1
+                      text-sm
+                      text-slate-700
+                    "
+                  >
+                    {USER.name}
+                  </p>
+                </div>
+
+                <div>
+                  <p
+                    className="
+                      text-xs
+                      font-semibold
+                      uppercase
+                      tracking-wide
+                      text-slate-400
+                    "
+                  >
+                    Email
+                  </p>
+
+                  <p
+                    className="
+                      mt-1
+                      break-all
+                      text-sm
+                      text-slate-700
+                    "
+                  >
+                    {USER.email}
+                  </p>
+                </div>
+
+                <div>
+                  <p
+                    className="
+                      text-xs
+                      font-semibold
+                      uppercase
+                      tracking-wide
+                      text-slate-400
+                    "
+                  >
+                    Phone
+                  </p>
+
+                  <p
+                    className="
+                      mt-1
+                      text-sm
+                      text-slate-700
+                    "
+                  >
+                    {USER.phone}
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* ==================================================
+                            QUICK LINKS
+            ================================================== */}
+
+            <section
+              className="
+                rounded-2xl
+                border
+                border-[#EFEDF5]
+                bg-white
+                p-6
+                shadow-sm
+              "
+            >
+              <h2
+                className="
+                  text-lg
+                  font-bold
+                  text-slate-800
+                "
+              >
+                Quick Links
+              </h2>
+
+              <div className="mt-4 space-y-2">
+                <Link
+                  to="/listings"
+                  className="
+                    block
+                    rounded-xl
+                    px-4
+                    py-3
+                    text-sm
+                    font-semibold
+                    text-slate-700
+                    transition
+                    hover:bg-purple-50
+                    hover:text-purple-700
+                  "
+                >
+                  🔍 Browse Businesses
+                </Link>
+
+                <Link
+                  to="/categories"
+                  className="
+                    block
+                    rounded-xl
+                    px-4
+                    py-3
+                    text-sm
+                    font-semibold
+                    text-slate-700
+                    transition
+                    hover:bg-purple-50
+                    hover:text-purple-700
+                  "
+                >
+                  📂 Explore Categories
+                </Link>
+
+                <Link
+                  to="/map"
+                  className="
+                    block
+                    rounded-xl
+                    px-4
+                    py-3
+                    text-sm
+                    font-semibold
+                    text-slate-700
+                    transition
+                    hover:bg-purple-50
+                    hover:text-purple-700
+                  "
+                >
+                  📍 Nearby Map
+                </Link>
+              </div>
+            </section>
+          </aside>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>
-  )
+  );
 }

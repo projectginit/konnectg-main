@@ -2,15 +2,15 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-// ==========================================
-// GENERATE JWT
-// ==========================================
+/* ==========================================================
+                        JWT HELPER
+========================================================== */
 
-const generateToken = (userId, role) => {
+const generateToken = (user) => {
   return jwt.sign(
     {
-      userId,
-      role,
+      userId: user._id,
+      role: user.role,
     },
     process.env.JWT_SECRET,
     {
@@ -19,62 +19,103 @@ const generateToken = (userId, role) => {
   );
 };
 
-// ==========================================
-// REGISTER
-// ==========================================
+/* ==========================================================
+                        REGISTER
+========================================================== */
 
 export const registerUser = async (req, res) => {
   try {
     const { name, email, phone, password, role } = req.body;
 
-    // Validate required fields
+    /* ------------------------------------------------------
+                        VALIDATION
+    ------------------------------------------------------ */
 
-    if (!name || !email || !password) {
+    if (!name || !email || !phone || !password) {
       return res.status(400).json({
-        message: "Name, email and password are required.",
+        message: "Please provide name, email, phone and password.",
       });
     }
 
-    // Check existing email
+    /* ------------------------------------------------------
+                    VALIDATE ROLE
+    ------------------------------------------------------ */
+
+    /*
+      Admin accounts must NEVER be created through public
+      registration.
+
+      Only user and merchant accounts can register.
+    */
+
+    const accountRole = role || "user";
+
+    if (!["user", "merchant"].includes(accountRole)) {
+      return res.status(400).json({
+        message: "Invalid account type.",
+      });
+    }
+
+    /* ------------------------------------------------------
+                    NORMALIZE INPUT
+    ------------------------------------------------------ */
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const normalizedPhone = phone.trim().replace(/[\s-]/g, "");
+
+    const normalizedName = name.trim();
+
+    /* ------------------------------------------------------
+                    CHECK EXISTING USER
+    ------------------------------------------------------ */
 
     const existingUser = await User.findOne({
-      email,
+      $or: [{ email: normalizedEmail }, { phone: normalizedPhone }],
     });
 
     if (existingUser) {
+      if (existingUser.email === normalizedEmail) {
+        return res.status(409).json({
+          message: "An account with this email already exists.",
+        });
+      }
+
       return res.status(409).json({
-        message: "An account with this email already exists.",
+        message: "An account with this phone number already exists.",
       });
     }
 
-    // Hash password
+    /* ------------------------------------------------------
+                    HASH PASSWORD
+    ------------------------------------------------------ */
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Prevent users from registering themselves as admin
-
-    const allowedRole = role === "merchant" ? "merchant" : "user";
-
-    // Create user
+    /* ------------------------------------------------------
+                    CREATE USER
+    ------------------------------------------------------ */
 
     const user = await User.create({
-      name,
-
-      email,
-
-      phone,
-
+      name: normalizedName,
+      email: normalizedEmail,
+      phone: normalizedPhone,
       password: hashedPassword,
-
-      role: allowedRole,
+      role: accountRole,
     });
 
-    // Generate token
+    /* ------------------------------------------------------
+                    GENERATE JWT
+    ------------------------------------------------------ */
 
-    const token = generateToken(user._id.toString(), user.role);
+    const token = generateToken(user);
 
-    res.status(201).json({
-      message: "User registered successfully.",
+    /* ------------------------------------------------------
+                    RESPONSE
+    ------------------------------------------------------ */
+
+    return res.status(201).json({
+      message: "Account created successfully.",
 
       token,
 
@@ -89,31 +130,45 @@ export const registerUser = async (req, res) => {
   } catch (error) {
     console.error("Registration error:", error.message);
 
-    res.status(500).json({
-      message: "Server error during registration.",
+    return res.status(500).json({
+      message: "Server error while creating account.",
     });
   }
 };
 
-// ==========================================
-// LOGIN
-// ==========================================
+/* ==========================================================
+                      LOGIN
+========================================================== */
 
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    /* ------------------------------------------------------
+                    VALIDATION
+    ------------------------------------------------------ */
+
     if (!email || !password) {
       return res.status(400).json({
-        message: "Email and password are required.",
+        message: "Please provide email and password.",
       });
     }
 
-    // Find user
+    /* ------------------------------------------------------
+                    FIND USER
+    ------------------------------------------------------ */
+
+    const normalizedEmail = email.trim().toLowerCase();
 
     const user = await User.findOne({
-      email,
+      email: normalizedEmail,
     });
+
+    /*
+      We intentionally return the same message whether the
+      email or password is incorrect. This avoids revealing
+      whether an account exists.
+    */
 
     if (!user) {
       return res.status(401).json({
@@ -121,15 +176,19 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    // Check account status
+    /* ------------------------------------------------------
+                    CHECK ACTIVE STATUS
+    ------------------------------------------------------ */
 
     if (!user.isActive) {
       return res.status(403).json({
-        message: "Your account has been deactivated.",
+        message: "This account has been deactivated.",
       });
     }
 
-    // Compare password
+    /* ------------------------------------------------------
+                    COMPARE PASSWORD
+    ------------------------------------------------------ */
 
     const passwordMatches = await bcrypt.compare(password, user.password);
 
@@ -139,11 +198,17 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    // Generate JWT
+    /* ------------------------------------------------------
+                    GENERATE JWT
+    ------------------------------------------------------ */
 
-    const token = generateToken(user._id.toString(), user.role);
+    const token = generateToken(user);
 
-    res.json({
+    /* ------------------------------------------------------
+                        RESPONSE
+    ------------------------------------------------------ */
+
+    return res.status(200).json({
       message: "Login successful.",
 
       token,
@@ -159,8 +224,8 @@ export const loginUser = async (req, res) => {
   } catch (error) {
     console.error("Login error:", error.message);
 
-    res.status(500).json({
-      message: "Server error during login.",
+    return res.status(500).json({
+      message: "Server error while logging in.",
     });
   }
 };

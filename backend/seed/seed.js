@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 
-import connectDB from "./config/db.js";
-import User from "./models/User.js";
-import Business from "./models/Business.js";
+import connectDB from "../config/db.js";
+import User from "../models/User.js";
+import Business from "../models/Business.js";
 
 dotenv.config();
 

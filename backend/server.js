@@ -1,11 +1,14 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+
 import connectDB from "./config/db.js";
+
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import roleTestRoutes from "./routes/roleTestRoutes.js";
 import businessRoutes from "./routes/businessRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
 
 dotenv.config();
 
@@ -32,6 +35,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/roles", roleTestRoutes);
 app.use("/api/businesses", businessRoutes);
+app.use("/api/reviews", reviewRoutes);
+
 // Start server
 app.listen(PORT, () => {
   console.log(`KonnectG server running on http://localhost:${PORT}`);

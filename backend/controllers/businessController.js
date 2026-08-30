@@ -82,7 +82,33 @@ export const createBusiness = async (req, res) => {
 
 export const getBusinesses = async (req, res) => {
   try {
-    const { search, category, area, verified, featured } = req.query;
+    const {
+      search,
+      category,
+      area,
+      verified,
+      featured,
+      sort = "relevance",
+      page = 1,
+      limit = 20,
+    } = req.query;
+
+    /* ------------------------------------------------------
+                        PAGINATION
+    ------------------------------------------------------ */
+
+    const currentPage = Math.max(Number(page) || 1, 1);
+
+    const perPage = Math.min(
+      Math.max(Number(limit) || 20, 1),
+      100,
+    );
+
+    const skip = (currentPage - 1) * perPage;
+
+    /* ------------------------------------------------------
+                            FILTER
+    ------------------------------------------------------ */
 
     const filter = {
       isActive: true,
@@ -131,16 +157,85 @@ export const getBusinesses = async (req, res) => {
       filter.isFeatured = true;
     }
 
-    const businesses = await Business.find(filter)
-      .populate("owner", "name email")
-      .sort({
-        isFeatured: -1,
-        rating: -1,
-        reviewCount: -1,
-      });
+    /* ------------------------------------------------------
+                            SORTING
+    ------------------------------------------------------ */
+
+    let sortOption = {};
+
+    switch (sort) {
+      case "rating":
+        sortOption = {
+          rating: -1,
+          reviewCount: -1,
+        };
+        break;
+
+      case "reviews":
+        sortOption = {
+          reviewCount: -1,
+          rating: -1,
+        };
+        break;
+
+      case "newest":
+        sortOption = {
+          createdAt: -1,
+        };
+        break;
+
+      case "oldest":
+        sortOption = {
+          createdAt: 1,
+        };
+        break;
+
+      case "popular":
+        sortOption = {
+          views: -1,
+          rating: -1,
+        };
+        break;
+
+      case "relevance":
+      default:
+        sortOption = {
+          isFeatured: -1,
+          rating: -1,
+          reviewCount: -1,
+          createdAt: -1,
+        };
+        break;
+    }
+
+    /* ------------------------------------------------------
+                    FETCH BUSINESSES
+    ------------------------------------------------------ */
+
+    const [businesses, totalBusinesses] = await Promise.all([
+      Business.find(filter)
+        .populate("owner", "name email")
+        .sort(sortOption)
+        .skip(skip)
+        .limit(perPage),
+
+      Business.countDocuments(filter),
+    ]);
+
+    /* ------------------------------------------------------
+                        PAGINATION INFO
+    ------------------------------------------------------ */
+
+    const totalPages = Math.ceil(totalBusinesses / perPage);
 
     return res.status(200).json({
       count: businesses.length,
+      total: totalBusinesses,
+      page: currentPage,
+      limit: perPage,
+      totalPages,
+      hasNextPage: currentPage < totalPages,
+      hasPreviousPage: currentPage > 1,
       businesses,
     });
   } catch (error) {
@@ -148,6 +243,33 @@ export const getBusinesses = async (req, res) => {
 
     return res.status(500).json({
       message: "Server error while retrieving businesses.",
+    });
+  }
+};
+
+/* ==========================================================
+                    GET MY BUSINESSES
+========================================================== */
+
+export const getMyBusinesses = async (req, res) => {
+  try {
+    const businesses = await Business.find({
+      owner: req.user._id,
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("owner", "name email");
+
+    return res.status(200).json({
+      count: businesses.length,
+      businesses,
+    });
+  } catch (error) {
+    console.error("Get my businesses error:", error.message);
+
+    return res.status(500).json({
+      message: "Server error while retrieving your businesses.",
     });
   }
 };
@@ -172,12 +294,13 @@ export const getBusinessById = async (req, res) => {
       });
     }
 
-    // Increment views.
-    await Business.findByIdAndUpdate(business._id, {
-      $inc: {
-        views: 1,
-      },
-    });
+    /* ------------------------------------------------------
+                        INCREMENT VIEWS
+    ------------------------------------------------------ */
+
+    business.views += 1;
+
+    await business.save();
 
     return res.status(200).json({
       business,

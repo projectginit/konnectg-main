@@ -6,6 +6,7 @@ import authorizeRoles from "../middleware/roleMiddleware.js";
 import {
   createBusiness,
   getBusinesses,
+  getMyBusinesses,
   getBusinessById,
   updateBusiness,
   deleteBusiness,
@@ -23,6 +24,8 @@ const router = express.Router();
 
 // Get businesses
 router.get("/", getBusinesses);
+
+router.get("/my", authMiddleware, authorizeRoles("merchant"), getMyBusinesses);
 
 // Get single business
 router.get("/:businessId", getBusinessById);

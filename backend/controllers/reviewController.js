@@ -1,5 +1,6 @@
 import Review from "../models/Review.js";
 import Business from "../models/Business.js";
+import mongoose from "mongoose";
 
 /* ==========================================================
                     CREATE REVIEW
@@ -8,7 +9,7 @@ import Business from "../models/Business.js";
 export const createReview = async (req, res) => {
   try {
     const { businessId } = req.params;
-    const { rating, comment } = req.body;
+    const { rating, comment } = req.body || {};
 
     // ------------------------------------------------------
     // VALIDATION
@@ -181,7 +182,7 @@ export const getReviewById = async (req, res) => {
 export const updateReview = async (req, res) => {
   try {
     const { reviewId } = req.params;
-    const { rating, comment } = req.body;
+    const { rating, comment } = req.body || {};
 
     const review = await Review.findById(reviewId);
 
@@ -231,6 +232,7 @@ export const updateReview = async (req, res) => {
 
     await review.save();
 
+    // Recalculate business rating after update
     await updateBusinessRating(review.business);
 
     const updatedReview = await Review.findById(review._id).populate(
@@ -285,6 +287,7 @@ export const deleteReview = async (req, res) => {
 
     await review.deleteOne();
 
+    // Recalculate business rating after deletion
     await updateBusinessRating(businessId);
 
     return res.status(200).json({
@@ -304,10 +307,14 @@ export const deleteReview = async (req, res) => {
 ========================================================== */
 
 const updateBusinessRating = async (businessId) => {
+  // Convert the ID to ObjectId because Review.business
+  // is stored as a MongoDB ObjectId.
+  const businessObjectId = new mongoose.Types.ObjectId(businessId);
+
   const result = await Review.aggregate([
     {
       $match: {
-        business: businessId,
+        business: businessObjectId,
         status: "approved",
       },
     },
@@ -324,8 +331,12 @@ const updateBusinessRating = async (businessId) => {
     },
   ]);
 
+  // --------------------------------------------------------
+  // NO APPROVED REVIEWS
+  // --------------------------------------------------------
+
   if (result.length === 0) {
-    await Business.findByIdAndUpdate(businessId, {
+    await Business.findByIdAndUpdate(businessObjectId, {
       rating: 0,
       reviewCount: 0,
     });
@@ -333,7 +344,11 @@ const updateBusinessRating = async (businessId) => {
     return;
   }
 
-  await Business.findByIdAndUpdate(businessId, {
+  // --------------------------------------------------------
+  // UPDATE BUSINESS
+  // --------------------------------------------------------
+
+  await Business.findByIdAndUpdate(businessObjectId, {
     rating: Number(result[0].averageRating.toFixed(1)),
     reviewCount: result[0].reviewCount,
   });

@@ -275,6 +275,34 @@ export const getMyBusinesses = async (req, res) => {
 };
 
 /* ==========================================================
+                GET PENDING BUSINESSES
+========================================================== */
+
+export const getPendingBusinesses = async (req, res) => {
+  try {
+    const businesses = await Business.find({
+      approvalStatus: "pending",
+      isActive: true,
+    })
+      .populate("owner", "name email")
+      .sort({
+        createdAt: 1,
+      });
+
+    return res.status(200).json({
+      count: businesses.length,
+      businesses,
+    });
+  } catch (error) {
+    console.error("Get pending businesses error:", error.message);
+
+    return res.status(500).json({
+      message: "Server error while retrieving pending businesses.",
+    });
+  }
+};
+
+/* ==========================================================
                     GET BUSINESS BY ID
 ========================================================== */
 
@@ -458,6 +486,20 @@ export const approveBusiness = async (req, res) => {
       });
     }
 
+    // ------------------------------------------------------
+    // BUSINESS MUST BE ACTIVE
+    // ------------------------------------------------------
+
+    if (!business.isActive) {
+      return res.status(400).json({
+        message: "Cannot approve an inactive business.",
+      });
+    }
+
+    // ------------------------------------------------------
+    // APPROVE
+    // ------------------------------------------------------
+
     business.approvalStatus = "approved";
     business.rejectionReason = "";
 
@@ -499,6 +541,20 @@ export const rejectBusiness = async (req, res) => {
       });
     }
 
+    // ------------------------------------------------------
+    // BUSINESS MUST BE ACTIVE
+    // ------------------------------------------------------
+
+    if (!business.isActive) {
+      return res.status(400).json({
+        message: "Cannot reject an inactive business.",
+      });
+    }
+
+    // ------------------------------------------------------
+    // REJECT
+    // ------------------------------------------------------
+
     business.approvalStatus = "rejected";
     business.rejectionReason = rejectionReason.trim();
 
@@ -533,6 +589,20 @@ export const verifyBusiness = async (req, res) => {
       });
     }
 
+    // ------------------------------------------------------
+    // BUSINESS MUST BE APPROVED FIRST
+    // ------------------------------------------------------
+
+    if (business.approvalStatus !== "approved") {
+      return res.status(400).json({
+        message: "Business must be approved before it can be verified.",
+      });
+    }
+
+    // ------------------------------------------------------
+    // VERIFY
+    // ------------------------------------------------------
+
     business.verificationStatus = "verified";
 
     await business.save();
@@ -565,6 +635,20 @@ export const rejectVerification = async (req, res) => {
         message: "Business not found.",
       });
     }
+
+    // ------------------------------------------------------
+    // BUSINESS MUST BE APPROVED
+    // ------------------------------------------------------
+
+    if (business.approvalStatus !== "approved") {
+      return res.status(400).json({
+        message: "Business must be approved before verification can be rejected.",
+      });
+    }
+
+    // ------------------------------------------------------
+    // REJECT VERIFICATION
+    // ------------------------------------------------------
 
     business.verificationStatus = "rejected";
 

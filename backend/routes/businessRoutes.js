@@ -7,6 +7,7 @@ import {
   createBusiness,
   getBusinesses,
   getMyBusinesses,
+  getPendingBusinesses,
   getBusinessById,
   updateBusiness,
   deleteBusiness,
@@ -26,6 +27,8 @@ const router = express.Router();
 router.get("/", getBusinesses);
 
 router.get("/my", authMiddleware, authorizeRoles("merchant"), getMyBusinesses);
+
+router.get("/admin/pending", authMiddleware, authorizeRoles("admin", "owner"), getPendingBusinesses);
 
 // Get single business
 router.get("/:businessId", getBusinessById);

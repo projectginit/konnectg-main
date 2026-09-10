@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes.js";
 import roleTestRoutes from "./routes/roleTestRoutes.js";
 import businessRoutes from "./routes/businessRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/roles", roleTestRoutes);
 app.use("/api/businesses", businessRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/categories", categoryRoutes);
 
 // Start server
 app.listen(PORT, () => {

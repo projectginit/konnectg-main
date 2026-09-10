@@ -260,3 +260,139 @@ export const getUsers = async (req, res) => {
     });
   }
 };
+
+/* ==========================================================
+                    GET USER BY ID
+========================================================== */
+
+export const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    return res.status(200).json({
+      user,
+    });
+  } catch (error) {
+    console.error("Get user by ID error:", error.message);
+
+    return res.status(500).json({
+      message: "Server error while retrieving user.",
+    });
+  }
+};
+
+/* ==========================================================
+                    DEACTIVATE USER
+========================================================== */
+
+export const deactivateUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    // Prevent admins from modifying owner accounts.
+    if (
+      req.user.role === "admin" &&
+      user.role === "owner"
+    ) {
+      return res.status(403).json({
+        message: "Admins cannot deactivate owner accounts.",
+      });
+    }
+
+    // Prevent users from deactivating themselves through
+    // this administrative endpoint.
+    if (
+      user._id.toString() ===
+      req.user._id.toString()
+    ) {
+      return res.status(400).json({
+        message: "You cannot deactivate your own account here.",
+      });
+    }
+
+    user.isActive = false;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "User deactivated successfully.",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isActive: user.isActive,
+      },
+    });
+  } catch (error) {
+    console.error("Deactivate user error:", error.message);
+
+    return res.status(500).json({
+      message: "Server error while deactivating user.",
+    });
+  }
+};
+
+/* ==========================================================
+                    ACTIVATE USER
+========================================================== */
+
+export const activateUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    if (
+      req.user.role === "admin" &&
+      user.role === "owner"
+    ) {
+      return res.status(403).json({
+        message: "Admins cannot modify owner accounts.",
+      });
+    }
+
+    user.isActive = true;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "User activated successfully.",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isActive: user.isActive,
+      },
+    });
+  } catch (error) {
+    console.error("Activate user error:", error.message);
+
+    return res.status(500).json({
+      message: "Server error while activating user.",
+    });
+  }
+};

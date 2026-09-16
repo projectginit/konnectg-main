@@ -1,4 +1,5 @@
 import Business from "../models/Business.js";
+import Category from "../models/Category.js";
 
 /* ==========================================================
                     CREATE BUSINESS
@@ -9,7 +10,7 @@ export const createBusiness = async (req, res) => {
     const {
       name,
       description,
-      category,
+      categoryRef,
       phone,
       email,
       address,
@@ -24,9 +25,26 @@ export const createBusiness = async (req, res) => {
                         VALIDATION
     ------------------------------------------------------ */
 
-    if (!name || !category || !phone || !address || !area) {
+    if (!name || !categoryRef || !phone || !address || !area) {
       return res.status(400).json({
         message: "Name, category, phone, address and area are required.",
+      });
+    }
+
+    if (!categoryRef.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        message: "Invalid category ID.",
+      });
+    }
+
+    const categoryDocument = await Category.findOne({
+      _id: categoryRef,
+      isActive: true,
+    });
+
+    if (!categoryDocument) {
+      return res.status(400).json({
+        message: "Category not found or inactive.",
       });
     }
 
@@ -37,7 +55,12 @@ export const createBusiness = async (req, res) => {
     const business = await Business.create({
       name: name.trim(),
       description: description?.trim() || "",
-      category: category.trim(),
+
+      // Keep the existing string field for backward compatibility.
+      category: categoryDocument.name,
+
+      // New proper Category relationship.
+      categoryRef: categoryDocument._id,
 
       // IMPORTANT:
       // The owner comes from the authenticated user.
@@ -99,10 +122,7 @@ export const getBusinesses = async (req, res) => {
 
     const currentPage = Math.max(Number(page) || 1, 1);
 
-    const perPage = Math.min(
-      Math.max(Number(limit) || 20, 1),
-      100,
-    );
+    const perPage = Math.min(Math.max(Number(limit) || 20, 1), 100);
 
     const skip = (currentPage - 1) * perPage;
 
@@ -130,7 +150,25 @@ export const getBusinesses = async (req, res) => {
     ------------------------------------------------------ */
 
     if (category?.trim()) {
-      filter.category = category.trim();
+      const categoryDocument = await Category.findOne({
+        slug: category.trim().toLowerCase(),
+        isActive: true,
+      });
+
+      if (!categoryDocument) {
+        return res.status(200).json({
+          count: 0,
+          total: 0,
+          page: currentPage,
+          limit: perPage,
+          totalPages: 0,
+          hasNextPage: false,
+          hasPreviousPage: false,
+          businesses: [],
+        });
+      }
+
+      filter.categoryRef = categoryDocument._id;
     }
 
     /* ------------------------------------------------------
@@ -215,6 +253,7 @@ export const getBusinesses = async (req, res) => {
     const [businesses, totalBusinesses] = await Promise.all([
       Business.find(filter)
         .populate("owner", "name email")
+        .populate("categoryRef", "name slug description icon image")
         .sort(sortOption)
         .skip(skip)
         .limit(perPage),
@@ -259,7 +298,8 @@ export const getMyBusinesses = async (req, res) => {
       .sort({
         createdAt: -1,
       })
-      .populate("owner", "name email");
+      .populate("owner", "name email")
+      .populate("categoryRef", "name slug description icon image");
 
     return res.status(200).json({
       count: businesses.length,
@@ -285,6 +325,7 @@ export const getPendingBusinesses = async (req, res) => {
       isActive: true,
     })
       .populate("owner", "name email")
+      .populate("categoryRef", "name slug description icon image")
       .sort({
         createdAt: 1,
       });
@@ -314,7 +355,9 @@ export const getBusinessById = async (req, res) => {
       _id: businessId,
       isActive: true,
       approvalStatus: "approved",
-    }).populate("owner", "name email");
+    })
+      .populate("owner", "name email")
+      .populate("categoryRef", "name slug description icon image");
 
     if (!business) {
       return res.status(404).json({
@@ -373,13 +416,46 @@ export const updateBusiness = async (req, res) => {
     }
 
     /* ------------------------------------------------------
+                    CATEGORY VALIDATION
+    ------------------------------------------------------ */
+
+    if (req.body.categoryRef !== undefined) {
+      const { categoryRef } = req.body;
+
+      if (!categoryRef) {
+        return res.status(400).json({
+          message: "Category cannot be empty.",
+        });
+      }
+
+      if (!categoryRef.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(400).json({
+          message: "Invalid category ID.",
+        });
+      }
+
+      const categoryDocument = await Category.findOne({
+        _id: categoryRef,
+        isActive: true,
+      });
+
+      if (!categoryDocument) {
+        return res.status(400).json({
+          message: "Category not found or inactive.",
+        });
+      }
+
+      business.categoryRef = categoryDocument._id;
+      business.category = categoryDocument.name;
+    }
+
+    /* ------------------------------------------------------
                     ALLOWED FIELDS
     ------------------------------------------------------ */
 
     const allowedFields = [
       "name",
       "description",
-      "category",
       "phone",
       "email",
       "address",
@@ -409,6 +485,8 @@ export const updateBusiness = async (req, res) => {
     }
 
     await business.save();
+
+    await business.populate("categoryRef", "name slug description icon image");
 
     return res.status(200).json({
       message: "Business updated successfully.",
@@ -505,6 +583,8 @@ export const approveBusiness = async (req, res) => {
 
     await business.save();
 
+    await business.populate("categoryRef", "name slug description icon image");
+
     return res.status(200).json({
       message: "Business approved successfully.",
       business,
@@ -560,6 +640,8 @@ export const rejectBusiness = async (req, res) => {
 
     await business.save();
 
+    await business.populate("categoryRef", "name slug description icon image");
+
     return res.status(200).json({
       message: "Business rejected successfully.",
       business,
@@ -607,6 +689,8 @@ export const verifyBusiness = async (req, res) => {
 
     await business.save();
 
+    await business.populate("categoryRef", "name slug description icon image");
+
     return res.status(200).json({
       message: "Business verified successfully.",
       business,
@@ -642,7 +726,8 @@ export const rejectVerification = async (req, res) => {
 
     if (business.approvalStatus !== "approved") {
       return res.status(400).json({
-        message: "Business must be approved before verification can be rejected.",
+        message:
+          "Business must be approved before verification can be rejected.",
       });
     }
 
@@ -653,6 +738,8 @@ export const rejectVerification = async (req, res) => {
     business.verificationStatus = "rejected";
 
     await business.save();
+
+    await business.populate("categoryRef", "name slug description icon image");
 
     return res.status(200).json({
       message: "Business verification rejected.",

@@ -26,6 +26,13 @@ const businessSchema = new mongoose.Schema(
       trim: true,
     },
 
+    categoryRef: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+      index: true,
+    },
+
     // ==========================================================
     // OWNER
     // ==========================================================
